@@ -2,7 +2,7 @@
 
 Name:           plexus-utils
 Version:        3.5.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Plexus Common Utilities
 # ASL 1.1: several files in src/main/java/org/codehaus/plexus/util/
 # xpp: src/main/java/org/codehaus/plexus/util/xml/pull directory
@@ -18,6 +18,8 @@ BuildArch:      noarch
 ExclusiveArch:  %{java_arches} noarch
 
 Source0:        https://github.com/codehaus-plexus/%{name}/archive/%{name}-%{version}.tar.gz
+
+Patch0:         CVE-2025-67030.patch
 
 %if %{with bootstrap}
 BuildRequires:  javapackages-bootstrap
@@ -38,6 +40,7 @@ is like a J2EE application server, without all the baggage.
 
 %prep
 %setup -q -n %{name}-%{name}-%{version}
+%patch -P0 -p1
 
 %mvn_file : plexus/utils
 %mvn_alias : plexus:plexus-utils
@@ -52,6 +55,10 @@ is like a J2EE application server, without all the baggage.
 %license NOTICE.txt LICENSE.txt
 
 %changelog
+* Tue May 20 2025 Jacek Migacz <jmigacz@redhat.com> - 3.5.1-9
+- Fix CVE-2025-67030: Directory Traversal in Expand.extractFile
+  Resolves: RHEL-165336
+
 * Tue Oct 29 2024 Troy Dawson <tdawson@redhat.com> - 3.5.1-8
 - Bump release for October 2024 mass rebuild:
   Resolves: RHEL-64018
