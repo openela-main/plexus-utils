@@ -2,7 +2,7 @@
 
 Name:           plexus-utils
 Version:        3.3.0
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Plexus Common Utilities
 # ASL 1.1: several files in src/main/java/org/codehaus/plexus/util/ 
 # xpp: src/main/java/org/codehaus/plexus/util/xml/pull directory
@@ -19,6 +19,8 @@ ExclusiveArch:  aarch64 ppc64le s390x x86_64 noarch
 
 Source0:        https://github.com/codehaus-plexus/%{name}/archive/%{name}-%{version}.tar.gz
 Source1:        http://apache.org/licenses/LICENSE-2.0.txt
+
+Patch0:         CVE-2025-67030.patch
 
 BuildRequires:  maven-local-openjdk8
 %if %{with bootstrap}
@@ -41,6 +43,7 @@ is like a J2EE application server, without all the baggage.
 
 %prep
 %setup -q -n %{name}-%{name}-%{version}
+%patch -P0 -p1
 
 cp %{SOURCE1} .
 
@@ -72,6 +75,10 @@ cp %{SOURCE1} .
 %license NOTICE.txt LICENSE-2.0.txt
 
 %changelog
+* Tue May 20 2025 Jacek Migacz <jmigacz@redhat.com> - 3.3.0-14
+- Fix CVE-2025-67030: Directory Traversal in Expand.extractFile
+  Resolves: RHEL-165350
+
 * Sat Nov 23 2024 Marián Konček <mkoncek@redhat.com> - 3.3.0-13
 - Add noarch to ExclusiveArch
 
