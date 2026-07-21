@@ -1,6 +1,6 @@
 Name:           plexus-utils
 Version:        3.1.0
-Release:        3%{?dist}
+Release:        3%{?dist}.1
 Summary:        Plexus Common Utilities
 # ASL 1.1: several files in src/main/java/org/codehaus/plexus/util/ 
 # xpp: src/main/java/org/codehaus/plexus/util/xml/pull directory
@@ -19,6 +19,7 @@ Source1:        http://apache.org/licenses/LICENSE-2.0.txt
 
 # https://github.com/codehaus-plexus/plexus-utils/issues/45
 Patch1:         0001-Follow-symlinks-in-NioFiles.copy.patch
+Patch2:         CVE-2025-67030.patch
 
 BuildRequires:  maven-local
 BuildRequires:  mvn(org.apache.felix:maven-bundle-plugin)
@@ -43,6 +44,7 @@ Javadoc for %{name}.
 %setup -q -n %{name}-%{name}-%{version}
 
 %patch1 -p1
+%patch -P2 -p1
 
 cp %{SOURCE1} .
 
@@ -77,6 +79,10 @@ cp %{SOURCE1} .
 %doc NOTICE.txt LICENSE-2.0.txt
 
 %changelog
+* Tue May 20 2025 Jacek Migacz <jmigacz@redhat.com> - 3.1.0-3.el8_10.1
+- Fix CVE-2025-67030: Directory Traversal in Expand.extractFile
+  Resolves: RHEL-165338
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
